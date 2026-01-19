@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>TennisEv - ParleyEv</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --card: #1a1a1a;
+            --accent:#ff6b00; 
+            --text: #e0e0e0;
+            --gray: #404040;
+            --danger: #ff4444;
+        }
+
+        body { 
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('../img/tennis.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--text); 
+    font-family: 'Segoe UI', sans-serif; 
+    margin: 0;
+    padding: 20px; 
+    display: flex; 
+    justify-content: center; 
+    min-height: 100vh;
+}
+
+        .container { width: 100%; max-width: 550px; }
+
+        .header { 
+            text-align: center; 
+            margin-bottom: 20px; 
+            border-bottom: 2px solid var(--accent); 
+            padding-bottom: 10px; 
+        }
+
+        .header h1 { 
+            margin: 0; 
+            color: var(--accent); 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-size: 1.8rem;
+        }
+
+        .card { 
+    background: rgba(26, 26, 26, 0.65) !important; 
+    backdrop-filter: blur(10px);
+    padding: 15px; 
+    border-radius: 12px; 
+    margin-bottom: 15px; 
+    border: 1px solid rgba(255,255,255,0.1); 
+}
+        
+        label { 
+            display: block; 
+            font-size: 0.7rem; 
+            color: var(--accent); 
+            text-transform: uppercase; 
+            margin-bottom: 5px; 
+            font-weight: bold; 
+        }
+
+        select, input { 
+            width: 100%; 
+            background: #252525; 
+            border: 1px solid var(--gray); 
+            color: white; 
+            padding: 10px; 
+            border-radius: 6px; 
+            margin-bottom: 12px; 
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .grid-players { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+        }
+        
+        input[type="range"] { 
+            -webkit-appearance: none; 
+            width: 100%; height: 4px; 
+            background: var(--gray); 
+            border-radius: 5px; margin: 10px 0; 
+        }
+
+        input[type="range"]::-webkit-slider-thumb { 
+            -webkit-appearance: none; width: 18px; height: 18px; 
+            background: var(--accent); border-radius: 50%; 
+            cursor: pointer; border: 2px solid #000;
+        }
+
+        .btn-analyze { 
+            width: 100%; padding: 18px; 
+            background: var(--accent); color: black; 
+            border: none; border-radius: 8px; 
+            font-weight: 800; cursor: pointer; 
+            text-transform: uppercase; font-size: 1rem;
+        }
+
+        .btn-copy {
+            width: 100%; padding: 12px;
+            background: #333; color: var(--accent);
+            border: 1px solid var(--accent); border-radius: 8px;
+            font-weight: bold; cursor: pointer;
+            margin-top: 15px; text-transform: uppercase;
+        }
+
+        .result-card { 
+            background: #000; border: 1px solid var(--accent); 
+            padding: 20px; border-radius: 12px; margin-top: 20px; 
+        }
+
+        .comparison-box {
+            font-size: 0.9em; background: #111; 
+            padding: 12px; border-radius: 8px; 
+            margin-bottom: 15px; border-left: 3px solid var(--accent);
+        }
+
+        .player-name-header {
+            color: var(--accent); font-weight: 800; 
+            text-transform: uppercase; border-bottom: 1px solid #333;
+            margin-bottom: 8px; padding-bottom: 4px; font-size: 1rem;
+            display: flex; justify-content: space-between;
+        }
+
+        .trend-tag { font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; color: black; }
+
+        .prob-bar-bg {
+            height: 12px; background: #333; border-radius: 6px; 
+            display: flex; overflow: hidden; margin: 10px 0;
+        }
+
+        .prob-bar-fill { height: 100%; transition: width 0.6s ease; }
+
+        .footer-credits {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .program-title {
+    text-align: center; 
+    font-size: 2.2rem; 
+    font-weight: 900; 
+    margin-bottom: 25px;
+    text-transform: uppercase; 
+    letter-spacing: 1px; 
+    color: #ffffff;
+}
+.program-title span { color: var(--accent); }
+.program-title i { margin-right: 15px; color: var(--accent); }
+
+/* CONTENEDOR DE BOTONES */
+.footer-links { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+    margin-top: 20px;
+    width: 100%; /* Obliga a que se ajuste al contenedor */
+    padding: 0;   /* Quita paddings que puedan empujar los botones */
+    box-sizing: border-box; /* Asegura que el borde no sume ancho extra */
+}
+
+.btn-link { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 8px;
+    width: 100%; 
+    padding: 14px; 
+    border-radius: 8px; 
+    font-weight: 700; 
+    font-size: 0.85rem; 
+    text-decoration: none; 
+    text-transform: uppercase;
+    transition: 0.3s; 
+    border: 2px solid transparent;
+    box-sizing: border-box;
+}
+
+/* COLORES INDIVIDUALES */
+.btn-triunfo { border-color: #ffcc00; color: #ffffff; background: rgba(255, 204, 0, 0.15); }
+.btn-tg { border-color: #0088cc; color: #ffffff; background: rgba(0, 136, 204, 0.15); }
+.btn-ig { border-color: #E1306C; color: #ffffff; background: rgba(225, 48, 108, 0.15); }
+.btn-contact { border-color: #ff6b00; color: #ffffff; background: rgba(255, 107, 0, 0.15); }
+
+/* EFECTO AL PASAR EL MOUSE */
+.btn-link:hover { transform: scale(1.02); background: rgba(255,255,255,0.1); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+        <h1 class="program-title"><i class="fas fa-baseball-ball"></i>TENNIS<span>EV</span></h1>
+
+
+    <div class="card">
+        <label>Banca Total ($)</label>
+        <input type="number" id="bankroll" inputmode="decimal" value="100">
+    </div>
+
+    <div class="card" style="border-top: 3px solid var(--accent);">
+        <label>Jugador A (Nombre)</label>
+        <input type="text" id="p1_name" placeholder="Nombre P1">
+        
+        <div class="grid-players">
+            <div>
+                <label>Jerarquía</label>
+                <select id="p1_tier">
+                    <option value="100">Top 10</option>
+                    <option value="50">Top 100</option>
+                    <option value="25">Top 200</option>
+                    <option value="10">Top 500</option>
+                    <option value="5">Top +500</option>
+                    <option value="1">Top +1000</option>
+                </select>
+            </div>
+            <div>
+                <label>Tendencia</label>
+                <select id="p1_trend">
+                    <option value="1.10">Winning</option>
+                    <option value="1.00" selected>Solid</option>
+                    <option value="0.90">Loser</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid-players">
+            <div>
+                <label>Momio Americano</label>
+                <input type="number" id="m1_us" inputmode="text" placeholder="-150">
+            </div>
+            <div>
+                <label>Físico: <span id="v1_val">100</span>%</label>
+                <input type="range" id="p1_vol" min="50" max="100" value="100" oninput="document.getElementById('v1_val').innerText = this.value">
+            </div>
+        </div>
+
+        <div class="grid-players">
+            <div><label>Hold Service %</label><input type="number" id="p1_hold" inputmode="decimal" value="85"></div>
+            <div><label>Break Opp %</label><input type="number" id="p1_break" inputmode="decimal" value="28"></div>
+        </div>
+    </div>
+
+    <div class="card" style="border-top: 3px solid #666;">
+        <label>Jugador B (Nombre)</label>
+        <input type="text" id="p2_name" placeholder="Nombre P2">
+        
+        <div class="grid-players">
+            <div>
+                <label>Jerarquía</label>
+                <select id="p2_tier">
+                    <option value="100">Top 10</option>
+                    <option value="50" selected>Top 100</option>
+                    <option value="25">Top 200</option>
+                    <option value="10">Top 500</option>
+                    <option value="5">Top +500</option>
+                    <option value="1">Top +1000</option>
+                </select>
+            </div>
+            <div>
+                <label>Tendencia</label>
+                <select id="p2_trend">
+                    <option value="1.10">Winning</option>
+                    <option value="1.00" selected>Solid</option>
+                    <option value="0.90">Loser</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid-players">
+            <div>
+                <label>Momio Americano</label>
+                <input type="number" id="m2_us" inputmode="text" placeholder="+120">
+            </div>
+            <div>
+                <label>Físico: <span id="v2_val">100</span>%</label>
+                <input type="range" id="p2_vol" min="50" max="100" value="100" oninput="document.getElementById('v2_val').innerText = this.value">
+            </div>
+        </div>
+
+        <div class="grid-players">
+            <div><label>Hold Service %</label><input type="number" id="p2_hold" inputmode="decimal" value="80"></div>
+            <div><label>Break Opp %</label><input type="number" id="p2_break" inputmode="decimal" value="20"></div>
+        </div>
+    </div>
+
+    <button class="btn-analyze" onclick="calculateQuantumTennis()">Iniciar Analisis Pro</button>
+
+    <div id="resultArea"></div>
+
+     <div class="footer-links">
+        <a href="https://t.me/parleyevapp" target="_blank" class="btn-link btn-contact">
+            <i class="fas fa-headset"></i> Soporte Pro
+        </a>
+        <a href="https://triunfobet.com/register?r=TRI12603362" target="_blank" class="btn-link btn-triunfo">
+            <i class="fas fa-gift"></i> Bono en TriunfoBet
+        </a>
+        <a href="https://t.me/parleyev" target="_blank" class="btn-link btn-tg">
+            <i class="fab fa-telegram-plane"></i> Canal de Pronósticos
+        </a>
+        <a href="https://instagram.com/parleyevapp" target="_blank" class="btn-link btn-ig">
+            <i class="fab fa-instagram"></i> Instagram
+        </a>
+    </div>
+    
+</div>
+
+<script>
+    // --- LÓGICA DE LOCALSTORAGE ---
+    const inputsToSave = [
+        'bankroll', 'p1_name', 'p1_tier', 'p1_trend', 'm1_us', 'p1_vol', 'p1_hold', 'p1_break',
+        'p2_name', 'p2_tier', 'p2_trend', 'm2_us', 'p2_vol', 'p2_hold', 'p2_break'
+    ];
+
+    function saveToLocalStorage() {
+        inputsToSave.forEach(id => {
+            const element = document.getElementById(id);
+            localStorage.setItem(id, element.value);
+        });
+    }
+
+    function loadFromLocalStorage() {
+        inputsToSave.forEach(id => {
+            const savedValue = localStorage.getItem(id);
+            if (savedValue !== null) {
+                const element = document.getElementById(id);
+                element.value = savedValue;
+                // Actualizar visualmente los porcentajes de los sliders
+                if (id === 'p1_vol') document.getElementById('v1_val').innerText = savedValue;
+                if (id === 'p2_vol') document.getElementById('v2_val').innerText = savedValue;
+            }
+        });
+    }
+
+    // Escuchar cambios para guardar automáticamente
+    document.querySelectorAll('input, select').forEach(element => {
+        element.addEventListener('change', saveToLocalStorage);
+        element.addEventListener('input', saveToLocalStorage);
+    });
+
+    // Cargar al iniciar
+    window.onload = loadFromLocalStorage;
+
+    // --- LÓGICA DE CÁLCULO ---
+    function usToDec(us) {
+        if (us > 0) return (us / 100) + 1;
+        return (100 / Math.abs(us)) + 1;
+    }
+
+    function getCasinoProb(us) {
+        if (us > 0) return (100 / (us + 100)) * 100;
+        return (Math.abs(us) / (Math.abs(us) + 100)) * 100;
+    }
+
+    let currentReport = "";
+
+    function calculateQuantumTennis() {
+        const bank = parseFloat(document.getElementById('bankroll').value);
+        const m1_raw = parseFloat(document.getElementById('m1_us').value);
+        const m2_raw = parseFloat(document.getElementById('m2_us').value);
+
+        if(isNaN(m1_raw) || isNaN(m2_raw)) { alert("Ingresa los momios."); return; }
+
+        const p1 = {
+            name: document.getElementById('p1_name').value || "Jugador A",
+            tier: parseFloat(document.getElementById('p1_tier').value),
+            trend: parseFloat(document.getElementById('p1_trend').value),
+            trendLabel: document.getElementById('p1_trend').options[document.getElementById('p1_trend').selectedIndex].text,
+            vol: parseFloat(document.getElementById('p1_vol').value) / 100,
+            hold: parseFloat(document.getElementById('p1_hold').value) / 100,
+            break: parseFloat(document.getElementById('p1_break').value) / 100,
+            odd: usToDec(m1_raw),
+            casinoProb: getCasinoProb(m1_raw)
+        };
+
+        const p2 = {
+            name: document.getElementById('p2_name').value || "Jugador B",
+            tier: parseFloat(document.getElementById('p2_tier').value),
+            trend: parseFloat(document.getElementById('p2_trend').value),
+            trendLabel: document.getElementById('p2_trend').options[document.getElementById('p2_trend').selectedIndex].text,
+            vol: parseFloat(document.getElementById('p2_vol').value) / 100,
+            hold: parseFloat(document.getElementById('p2_hold').value) / 100,
+            break: parseFloat(document.getElementById('p2_break').value) / 100,
+            odd: usToDec(m2_raw),
+            casinoProb: getCasinoProb(m2_raw)
+        };
+
+        const p1Power = (p1.hold + p1.break) * Math.pow(p1.tier, 1.5) * p1.vol * p1.trend;
+        const p2Power = (p2.hold + p2.break) * Math.pow(p2.tier, 1.5) * p2.vol * p2.trend;
+
+        const p1Prob = (p1Power / (p1Power + p2Power)) * 100;
+        const p2Prob = 100 - p1Prob;
+
+        const diff1 = p1Prob - p1.casinoProb;
+        const diff2 = p2Prob - p2.casinoProb;
+
+        const ev1 = ((p1Prob/100) * p1.odd) - 1;
+        const ev2 = ((p2Prob/100) * p2.odd) - 1;
+
+        let resHtml = `<div class="result-card">
+            <h3 style="color:var(--accent); margin:0 0 15px 0; text-align:center;">RESULTADOS DEL ANALISIS</h3>
+            
+            <div class="comparison-box">
+                <div class="player-name-header">
+                    ${p1.name} 
+                    <span class="trend-tag" style="background:${p1.trend > 1 ? 'var(--accent)' : p1.trend < 1 ? 'var(--danger)' : '#888'}">${p1.trendLabel}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                    <span>Prob Real:</span> <span style="color:var(--accent); font-weight:bold;">${p1Prob.toFixed(1)}%</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                    <span>Prob Casa:</span> <span style="color:#888;">${p1.casinoProb.toFixed(1)}%</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.85em; border-top:1px solid #222; padding-top:4px;">
+                    <span>Diferencia:</span> <span style="color:${diff1 >= 0 ? 'var(--accent)' : 'var(--danger)'}">${(diff1 >= 0 ? '+' : '')}${diff1.toFixed(1)}%</span>
+                </div>
+            </div>
+
+            <div class="comparison-box" style="border-left-color: #555;">
+                <div class="player-name-header">
+                    ${p2.name} 
+                    <span class="trend-tag" style="background:${p2.trend > 1 ? 'var(--accent)' : p2.trend < 1 ? 'var(--danger)' : '#888'}">${p2.trendLabel}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                    <span>Prob Real:</span> <span style="color:var(--accent); font-weight:bold;">${p2Prob.toFixed(1)}%</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                    <span>Prob Casa:</span> <span style="color:#888;">${p2.casinoProb.toFixed(1)}%</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.85em; border-top:1px solid #222; padding-top:4px;">
+                    <span>Diferencia:</span> <span style="color:${diff2 >= 0 ? 'var(--accent)' : 'var(--danger)'}">${(diff2 >= 0 ? '+' : '')}${diff2.toFixed(1)}%</span>
+                </div>
+            </div>
+
+            <div class="prob-bar-bg">
+                <div class="prob-bar-fill" style="width:${p1Prob}%; background:var(--accent)"></div>
+                <div class="prob-bar-fill" style="width:${p2Prob}%; background:#444"></div>
+            </div>
+
+            <div style="margin-top:20px; font-size:0.95em;">
+                <div style="display:flex; justify-content:space-between; color:${ev1 > 0 ? 'var(--accent)' : 'var(--danger)'}; margin-bottom:5px;">
+                    <span>EV ${p1.name}: ${(ev1*100).toFixed(2)}%</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; color:${ev2 > 0 ? 'var(--accent)' : 'var(--danger)'};">
+                    <span>EV ${p2.name}: ${(ev2*100).toFixed(2)}%</span>
+                </div>
+            </div>`;
+
+        let bestName = "";
+        let finalStake = "0.00";
+
+        if(ev1 > 0 || ev2 > 0) {
+            const bestEv = ev1 > ev2 ? ev1 : ev2;
+            const bestOdd = ev1 > ev2 ? p1.odd : p2.odd;
+            bestName = ev1 > ev2 ? p1.name : p2.name;
+            finalStake = (bank * (bestEv / (bestOdd - 1)) / 10).toFixed(2);
+            
+            resHtml += `<div style="margin-top:20px; border-top:1px solid #333; padding-top:15px; text-align:center;">
+                <div style="color:var(--accent); font-weight:bold; font-size:1.1rem; text-transform:uppercase;">VALOR EN ${bestName}</div>
+                <div style="color:white; margin-top:5px; font-size:1rem;">STAKE: <span style="color:var(--accent);">$${finalStake}</span></div>
+            </div>`;
+        }
+
+        resHtml += `<button id="btnCopy" class="btn-copy" onclick="copyToTelegram()">Copiar Resultado</button></div>`;
+        document.getElementById('resultArea').innerHTML = resHtml;
+
+        currentReport = `🎾 AUDITORÍA TENNIS\n` +
+                        `━━━━━━━━━━━━━━━━━━━━\n` +
+                        `👤 ${p1.name}\n` +
+                        `└ Real: ${p1Prob.toFixed(1)}% | Casa: ${p1.casinoProb.toFixed(1)}%\n` +
+                        `└ EV: ${(ev1*100).toFixed(2)}%\n\n` +
+                        `👤 ${p2.name}\n` +
+                        `└ Real: ${p2Prob.toFixed(1)}% | Casa: ${p2.casinoProb.toFixed(1)}%\n` +
+                        `└ EV: ${(ev2*100).toFixed(2)}%\n` +
+                        `━━━━━━━━━━━━━━━━━━━━\n` +
+                        (bestName ? `🎯 SELECCIÓN: ${bestName.toUpperCase()}\n💰 STAKE: $${finalStake}` : `❌ NO HAY VALOR`) +
+                        `\n━━━━━━━━━━━━━━━━━━━━\n` +
+                        `${p1.name} [ ]\n` +
+                        `${p2.name} [ ]\n` +
+                        `⌛ ESPERANDO RESULTADO...`;
+    }
+
+    function copyToTelegram() {
+        navigator.clipboard.writeText(currentReport);
+        const btn = document.getElementById('btnCopy');
+        const originalText = btn.innerText;
+        btn.innerText = "¡COPIADO!";
+        setTimeout(() => { btn.innerText = originalText; }, 2000);
+    }
+</script>
+</body>
+</html>
